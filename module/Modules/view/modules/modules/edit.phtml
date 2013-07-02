@@ -10,14 +10,14 @@
 		<fieldset>
 		    <legend><?php echo $form->getName()?></legend>
 		    <?php foreach ($form as $element) {?>
-		    	<label><?php echo $element->getLabel()?></label>
+		    	<label><?php //echo $element->getLabel()?></label>
 		    	<?php if($element->getMessages()){?>
 		    	<div class="alert alert-error">
 				  <button type="button" class="close" data-dismiss="alert">&times;</button>
 				  <?php echo join("<br />", $element->getMessages())?>
 				</div>
 				<?php }?>
-				<?php echo $this->formInput($element)?>
+				<?php echo $this->formRow($element)?>
 			<?php }?>
 	    	<br />
 			<button type="submit" class="btn btn-primary">Save</button>

@@ -9,13 +9,14 @@ use Zend\Form\Annotation;
  * A movie
  *
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
- * @Annotation\Name("Test")
+ * @Annotation\Name("RelationTest")
  * @ORM\Entity
- * @ORM\Table(name="modules")
+ * @ORM\Table(name="relation")
  * @property integer $id
- * @property string $name
+ * @property string $title
+ * @property string $description
  */
-class Test extends Base
+class Relation
 {
 
 	/**
@@ -23,42 +24,26 @@ class Test extends Base
 	* @ORM\Column(type="integer");
 	* @ORM\GeneratedValue(strategy="AUTO")
 	* @Annotation\Exclude()
+	* @ListedAnnotation("name", dataType="string")
 	*/
 	public $id;
 
 	/**
 	* @ORM\Column(type="string");
 	* @Annotation\Type("Zend\Form\Element\Text")
-	* @Annotation\Options({"label":"Name:"})
+	* @Annotation\Options({"label":"Title:"})
 	* @Annotation\Required(true)
 	* @ListedAnnotation("name", dataType="string")	
 	*/
-	public $name;
-	
-	/**
-	 * @ORM\Column(type="integer");
-	 * @Annotation\Exclude()
-	 */
-	public $select_id;
-	
-	/**
-	* @ORM\OneToOne(targetEntity="\Modules\Entity\Relation")
-	* @Annotation\Type("Application\Form\Element\Relation")
-	* @Annotation\Options({"label":"Select text:"})
-	* @Annotation\Required(true)
-	* @Annotation\Options({"relationColumn":"relcol"})
-	* @ListedAnnotation("name", dataType="string")
-	* @RelationAnnotation("title")		
-	*/
-	public $select;
+	public $title;
 	
 	/**
 	* @ORM\Column(type="string");
 	* @Annotation\Type("Zend\Form\Element\Text")
-	* @Annotation\Options({"label":"Title:"})
+	* @Annotation\Options({"label":"Description:"})
 	* @Annotation\Required(false)
 	*/
-	public $title;
+	public $description;
 
 	/**
 	* Magic getter to expose protected properties.

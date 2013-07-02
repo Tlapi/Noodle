@@ -23,29 +23,7 @@ class ModulesController extends AbstractActionController
 	 */
 	public function indexAction()
 	{
-		$module = $this->getEntityManager()->getRepository('Modules\Entity\Test');
 		
-		$test = new \Modules\Entity\Test();
-		$builder = new AnnotationBuilder();
-		$form = $builder->createForm($test);
-
-		if ($this->request->isPost()) {
-			$form->bind($test);
-	        $form->setData($this->request->getPost());
-	        if ($form->isValid()) {
-	            //die('valid');
-	        	$this->getEntityManager()->persist($test);
-	        	$this->getEntityManager()->flush();
-	        	// redirect
-	        } else {
-	        	//die('invalid');
-	        }
-
-	    }
-		
-		return new ViewModel(array(
-				'form' => $form
-		));
 	}
 	
 	/**
@@ -58,6 +36,9 @@ class ModulesController extends AbstractActionController
 		
 		$module = $this->getEntityManager()->getRepository('Modules\Entity\\'.$name);
 		$listed = array();
+		
+		$builder = new AnnotationBuilder();
+		$form = $builder->createForm(new \Modules\Entity\Test());
 		
 		$reader = new \Doctrine\Common\Annotations\AnnotationReader();
 		$reflClass = new \ReflectionClass('Modules\Entity\\'.$name);
@@ -73,7 +54,8 @@ class ModulesController extends AbstractActionController
 		return new ViewModel(array(
 				'listed' => $listed,
 				'name' => $name,
-				'data' => $module->findAll()
+				'data' => $module->findAll(),
+				'form' => $form
 		));
 		
 	}
@@ -103,10 +85,47 @@ class ModulesController extends AbstractActionController
 	 */
 	public function addAction()
 	{
-		$module = $this->getEntityManager()->getRepository('Modules\Entity\Test');
+		// Get name of entity
+		$name = (string) $this->params()->fromRoute('name', 0);
+		$entityClassname = '\Modules\Entity\\'.$name;
+				
+		// Get entity repository
+		$module = $this->getEntityManager()->getRepository('Modules\Entity\\'.$name);
 		
+		// Get entity instance
+		$entity = new $entityClassname();
+		
+		// Build basic form
 		$builder = new AnnotationBuilder();
-		$form = $builder->createForm(new \Modules\Entity\Test());
+		
+		$formManager = $this->serviceLocator->get('FormElementManager');
+		//$form = $formManager->get('Modules\Forms\Form');
+		$builder->setFormFactory($this->getServiceLocator()->get('baseForm'));
+		$form = $builder->createForm($entity);
+		
+		//var_dump($form->get('select'));
+		
+		/*
+		// Build special form segments based on form annotation
+		$formMapper = $this->getServiceLocator()->get('formMapperService');
+		$form = $formMapper->remapFormFields($form, $name);
+		
+		if ($this->request->isPost()) {
+			$form->bind($entity);
+			
+			$form->setData($this->request->getPost());
+			if ($form->isValid()) {
+				$entity = $formMapper->bindValues($name, $entity);
+			
+				$this->getEntityManager()->persist($entity);
+				$this->getEntityManager()->flush();
+				// redirect
+				die('redirect');
+			} else {
+				//die('invalid');
+			}
+			
+		}*/
 		
 		return new ViewModel(array(
 				'form' => $form

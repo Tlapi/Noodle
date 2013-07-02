@@ -20,7 +20,10 @@
 		<?php foreach($this->data as $row){?>
 		<tr>
 			<?php foreach($this->listed as $listed){?>
-				<td><?php echo $row->$listed?></td>
+				<td>
+					<?php //echo $row->$listed?>
+					<?php if(method_exists($this->form->get($listed), 'getListedValue')){ echo $this->form->get($listed)->getListedValue(); }else{ echo $row->$listed;}?>
+				</td>
 			<?php }?>
 			<td><a href="<?php echo $this->url('modules/edit', array('name' => $this->name, 'id' => $row->id))?>" class="btn btn-warning"><i class="icon-pencil"></i> Edit</a></td>
 			<td><a href="" class="btn btn-danger"><i class="icon-remove"></i> Delete</a></td>
