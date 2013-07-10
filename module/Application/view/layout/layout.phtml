@@ -40,26 +40,28 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="container">
-        
+
         	<div class="row-fluid">
-			    <div class="span2">
+			    <div class="span3">
 			      	<!--Sidebar content-->
 			      	<ul class="nav nav-tabs nav-stacked">
-						<li><a href="<?php echo $this->url('modules/show', array('name' => 'Test'))?>">Test</a></li>
+			      		<?php foreach($this->moduleList() as $module){?>
+							<li><a href="<?php echo $this->url('modules/show', array('name' => $module->entity))?>"><?php echo $module->module_name?></a></li>
+			      		<?php }?>
 					</ul>
 			    </div>
-			    <div class="span10">
+			    <div class="span9">
 			      <!--Body content-->
-			      
+
 			      <?php echo $this->content; ?>
-			      
+
 			    </div>
 			  </div>
             <hr>
             <footer>
-                <p>&copy; 2005 - <?php echo date('Y') ?> by Zend Technologies Ltd. <?php echo $this->translate('All rights reserved.') ?></p>
+                <p>&copy; 2005 - <?php echo date('Y') ?> by Massimo Filippi <?php echo $this->translate('All rights reserved.') ?></p>
             </footer>
         </div> <!-- /container -->
         <?php echo $this->inlineScript() ?>

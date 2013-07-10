@@ -11,7 +11,7 @@ use Zend\Form\Annotation;
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
  * @Annotation\Name("Test")
  * @ORM\Entity
- * @ORM\Table(name="modules")
+ * @ORM\Table(name="noodle_modules")
  * @property integer $id
  * @property string $name
  */
@@ -25,13 +25,13 @@ class Test extends Base
 	* @Annotation\Exclude()
 	*/
 	public $id;
-	
+
 	/**
 	* @ORM\Column(type="integer");
 	* @Annotation\Exclude()
 	*/
 	public $parent_row_id;
-	
+
 	/**
 	* @ORM\Column(type="integer");
 	* @Annotation\Exclude()
@@ -42,19 +42,19 @@ class Test extends Base
 	* @ORM\Column(type="string");
 	* @Annotation\Type("Zend\Form\Element\Text")
 	* @Annotation\Options({"label":"Name:", "listed":true})
-	* @Annotation\Required(true)	
+	* @Annotation\Required(true)
 	*/
 	public $name;
-	
-	
+
+
 	/**
 	* @ORM\OneToOne(targetEntity="\Modules\Entity\Relation")
 	* @Annotation\Type("Application\Form\Element\Relation")
 	* @Annotation\Required(true)
-	* @Annotation\Options({"label":"Select text:", "relationColumn":"title", "targetEntity":"\Modules\Entity\Relation", "listed":true})	
+	* @Annotation\Options({"label":"Select text:", "relationColumn":"title", "targetEntity":"\Modules\Entity\Relation", "listed":true})
 	*/
 	public $select;
-	
+
 	/**
 	* @ORM\Column(type="string");
 	* @Annotation\Type("Zend\Form\Element\Text")
@@ -62,7 +62,7 @@ class Test extends Base
 	* @Annotation\Required(false)
 	*/
 	public $title;
-	
+
 	/**
 	* @ORM\Column(type="integer");
 	* @Annotation\Type("Application\Form\Element\Picture")
@@ -70,7 +70,7 @@ class Test extends Base
 	* @Annotation\Required(false)
 	*/
 	public $picture;
-	
+
 	/**
 	 * @Annotation\Options({"label":"My sheet", "sheetType": "cyclic", "targetEntity":"\Modules\Entity\Relation"})
 	 */

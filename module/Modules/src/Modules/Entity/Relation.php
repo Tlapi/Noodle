@@ -11,7 +11,7 @@ use Zend\Form\Annotation;
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
  * @Annotation\Name("RelationTest")
  * @ORM\Entity
- * @ORM\Table(name="relation")
+ * @ORM\Table(name="noodle_relation")
  * @property integer $id
  * @property string $title
  * @property string $description
@@ -32,21 +32,21 @@ class Relation
 	 * @Annotation\Exclude()
 	 */
 	public $parent_row_id;
-	
+
 	/**
 	 * @ORM\Column(type="integer");
 	 * @Annotation\Exclude()
 	 */
 	public $parent_entity;
-	
+
 	/**
 	* @ORM\Column(type="string");
 	* @Annotation\Type("Zend\Form\Element\Text")
 	* @Annotation\Options({"listed": true,"label":"Title:"})
-	* @Annotation\Required(true)	
+	* @Annotation\Required(true)
 	*/
 	public $title;
-	
+
 	/**
 	* @ORM\Column(type="string");
 	* @Annotation\Type("Zend\Form\Element\Text")

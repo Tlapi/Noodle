@@ -2,11 +2,11 @@
 
 <a href="<?php echo $this->url('modules/add', array('name' => $this->name))?>" class="btn btn-info"><i class="icon-plus"></i> Add new record</a>
 
-<br /><br />	
-	
+<br /><br />
+
 <table class="table table-bordered">
 
-	
+
 	<thead>
 		<tr>
 			<?php foreach($this->listed as $listed){?>
@@ -16,7 +16,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		
+
 		<?php foreach($this->data as $row){?>
 		<tr>
 			<?php foreach($this->listed as $listed){?>
@@ -26,12 +26,20 @@
 				</td>
 			<?php }?>
 			<td><a href="<?php echo $this->url('modules/edit', array('name' => $this->name, 'id' => $row->id))?>" class="btn btn-warning"><i class="icon-pencil"></i> Edit</a></td>
-			<td><a href="" class="btn btn-danger"><i class="icon-remove"></i> Delete</a></td>
+			<td><a href="#" class="btn btn-danger"><i class="icon-remove"></i> Delete</a></td>
 		</tr>
 		<?php }?>
-		
+
 	</tbody>
 
 </table>
-	
+
 <a href="<?php echo $this->url('modules/add', array('name' => $this->name))?>" class="btn btn-info"><i class="icon-plus"></i> Add new record</a>
+
+<script>
+
+$('a.btn-danger').click(function(){
+	return false;
+});
+
+</script>

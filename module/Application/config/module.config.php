@@ -106,6 +106,7 @@ return array(
     				'orm_default' => array(
     						'drivers' => array(
     								'Modules\Entity' => 'noodle_driver',
+    								'Application\Entity' => 'noodle_driver',
     						)
     				)
     		)
