@@ -36,4 +36,14 @@ class Module
             ),
         );
     }
+    
+    public function getViewHelperConfig()
+    {
+    	return array(
+    			'invokables' => array(
+    					'formelement'       => 'Application\Form\View\Helper\FormElement',
+    					'formPicture'     => 'Application\Form\View\Helper\FormPicture',
+    			),
+    	);
+    }
 }

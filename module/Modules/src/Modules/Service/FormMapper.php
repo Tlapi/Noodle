@@ -4,10 +4,17 @@ namespace Modules\Service;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+use Zend\Form\Annotation\AnnotationBuilder;
+
 class FormMapper implements ServiceLocatorAwareInterface
 {
 
 	protected $serviceLocator;
+	
+	/**
+	 * @var Doctrine\ORM\EntityManager
+	 */
+	protected $em;
 
 	public function __construct()
 	{
@@ -15,77 +22,22 @@ class FormMapper implements ServiceLocatorAwareInterface
 	}
 
 	/**
-	 * Remap form fields according to annotations
+	 * Setup form for entity
 	 */
-	public function remapFormFields($form, $name) {
+	public function setupEntityForm($entityName) {
 		
-		$reader = new \Doctrine\Common\Annotations\AnnotationReader();
-		$reflClass = new \ReflectionClass('Modules\Entity\\'.$name);
+		$entityClassname = $entityName;
 		
-		// Cycle through form fields
-		foreach ($reflClass->getProperties() as $property) {
-			
-			$annotations = $reader->getPropertyAnnotations($property);
-			$relation = false;
-			
-			// Cycle through form field annotations
-			foreach($annotations as $annotation){
-				if($annotation instanceof \Doctrine\ORM\Mapping\OneToOne){
-					$relation = true;
-					$targetEntity = $annotation->targetEntity;
-				}
-				if($annotation instanceof \Modules\Entity\RelationAnnotation){
-					$targetColumn = $annotation->getPropertyName();
-				}
-			}
-			
-			// Form field is relation to another entity
-			if($relation){
-				$valueOptions = array(0 => 'Select one...');
-				$relation = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager')->getRepository($targetEntity);
-				foreach($relation->findAll() as $object){
-					$valueOptions[$object->id] = $object->$targetColumn;
-				}
-				$form->get($property->name)->setValueOptions($valueOptions);
-			}
-			
-		}
+		// Get entity instance
+		$entity = new $entityClassname();
+		
+		// Build basic form
+		$builder = new AnnotationBuilder();
+		
+		$builder->setFormFactory($this->getServiceLocator()->get('baseForm'));
+		$form = $builder->createForm($entity);
 		
 		return $form;
-		
-	}
-	
-	public function bindValues($name, $entity) {
-		
-		$reader = new \Doctrine\Common\Annotations\AnnotationReader();
-		$reflClass = new \ReflectionClass('Modules\Entity\\'.$name);
-		
-		// Cycle through form fields
-		foreach ($reflClass->getProperties() as $property) {
-				
-			$annotations = $reader->getPropertyAnnotations($property);
-			$relation = false;
-				
-			// Cycle through form field annotations
-			foreach($annotations as $annotation){
-				if($annotation instanceof \Doctrine\ORM\Mapping\OneToOne){
-					$relation = true;
-					$targetEntity = $annotation->targetEntity;
-				}
-				if($annotation instanceof \Modules\Entity\RelationAnnotation){
-					$targetColumn = $annotation->getPropertyName();
-				}
-			}
-				
-			// Form field is relation to another entity
-			if($relation){
-				$relation = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager')->getRepository($targetEntity);
-				$entity->{$property->name} = $relation->find($entity->{$property->name});
-			}
-				
-		}
-
-		return $entity;
 		
 	}
 
@@ -99,6 +51,18 @@ class FormMapper implements ServiceLocatorAwareInterface
 
 	public function getServiceLocator() {
 		return $this->serviceLocator;
+	}
+	
+	public function setEntityManager(EntityManager $em)
+	{
+		$this->em = $em;
+	}
+	public function getEntityManager()
+	{
+		if (null === $this->em) {
+			$this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+		}
+		return $this->em;
 	}
 
 }

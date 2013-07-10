@@ -25,30 +25,33 @@ class Test extends Base
 	* @Annotation\Exclude()
 	*/
 	public $id;
+	
+	/**
+	* @ORM\Column(type="integer");
+	* @Annotation\Exclude()
+	*/
+	public $parent_row_id;
+	
+	/**
+	* @ORM\Column(type="integer");
+	* @Annotation\Exclude()
+	*/
+	public $parent_entity;
 
 	/**
 	* @ORM\Column(type="string");
 	* @Annotation\Type("Zend\Form\Element\Text")
-	* @Annotation\Options({"label":"Name:"})
-	* @Annotation\Required(true)
-	* @ListedAnnotation("name", dataType="string")	
+	* @Annotation\Options({"label":"Name:", "listed":true})
+	* @Annotation\Required(true)	
 	*/
 	public $name;
 	
-	/**
-	 * @ORM\Column(type="integer");
-	 * @Annotation\Exclude()
-	 */
-	public $select_id;
 	
 	/**
 	* @ORM\OneToOne(targetEntity="\Modules\Entity\Relation")
 	* @Annotation\Type("Application\Form\Element\Relation")
-	* @Annotation\Options({"label":"Select text:"})
 	* @Annotation\Required(true)
-	* @Annotation\Options({"relationColumn":"relcol"})
-	* @ListedAnnotation("name", dataType="string")
-	* @RelationAnnotation("title")		
+	* @Annotation\Options({"label":"Select text:", "relationColumn":"title", "targetEntity":"\Modules\Entity\Relation", "listed":true})	
 	*/
 	public $select;
 	
@@ -59,6 +62,19 @@ class Test extends Base
 	* @Annotation\Required(false)
 	*/
 	public $title;
+	
+	/**
+	* @ORM\Column(type="integer");
+	* @Annotation\Type("Application\Form\Element\Picture")
+	* @Annotation\Options({"label":"Picture:"})
+	* @Annotation\Required(false)
+	*/
+	public $picture;
+	
+	/**
+	 * @Annotation\Options({"label":"My sheet", "sheetType": "cyclic", "targetEntity":"\Modules\Entity\Relation"})
+	 */
+	public $sheet;
 
 	/**
 	* Magic getter to expose protected properties.

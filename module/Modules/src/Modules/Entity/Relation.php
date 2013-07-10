@@ -24,16 +24,26 @@ class Relation
 	* @ORM\Column(type="integer");
 	* @ORM\GeneratedValue(strategy="AUTO")
 	* @Annotation\Exclude()
-	* @ListedAnnotation("name", dataType="string")
 	*/
 	public $id;
 
 	/**
+	 * @ORM\Column(type="integer");
+	 * @Annotation\Exclude()
+	 */
+	public $parent_row_id;
+	
+	/**
+	 * @ORM\Column(type="integer");
+	 * @Annotation\Exclude()
+	 */
+	public $parent_entity;
+	
+	/**
 	* @ORM\Column(type="string");
 	* @Annotation\Type("Zend\Form\Element\Text")
-	* @Annotation\Options({"label":"Title:"})
-	* @Annotation\Required(true)
-	* @ListedAnnotation("name", dataType="string")	
+	* @Annotation\Options({"listed": true,"label":"Title:"})
+	* @Annotation\Required(true)	
 	*/
 	public $title;
 	

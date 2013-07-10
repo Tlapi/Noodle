@@ -33,10 +33,8 @@ class Module
     					'baseForm' => function ($sm) {
     						//$service1 = $sm->get('parentPagesService');
     						//$service2 = $sm->get('categoryService');
-    						$form    = new \Modules\Forms\Form;
-    						
-    						
-    						//$form->setService($service1, $service2);
+    						$form    = new \Modules\Forms\Form;    						
+    						$form->setServiceLocator($sm);
     						return $form;
     					},
     			),
@@ -50,9 +48,7 @@ class Module
     {
     	return array(
     			'factories' => array(
-    					'\Application\Form\Element\Relation' => function($sm) {
-    						return 'test';
-    					}
+    					
     			)
     	);
     }

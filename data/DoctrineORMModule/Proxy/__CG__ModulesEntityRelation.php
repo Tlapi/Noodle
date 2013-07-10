@@ -57,7 +57,7 @@ class Relation extends \Modules\Entity\Relation implements \Doctrine\ORM\Proxy\P
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'title', 'description');
+        return array('__isInitialized__', 'id', 'parent_row_id', 'parent_entity', 'title', 'description');
     }
 
     public function __clone()

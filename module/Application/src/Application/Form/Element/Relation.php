@@ -17,9 +17,33 @@ class Relation extends Select implements ServiceLocatorAwareInterface
 		// Here, we have $this->serviceLocator !!
 	}
 	
-	public function getListedValue()
+	public function prepare()
 	{
-		return 'test';
+		//var_dump($this->getOptions());
+		$targetEntity = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager')->getRepository($this->getOption('targetEntity'));
+		$relCol = $this->getOption('relationColumn');
+		
+		$options = array(0 => 'Choose option');
+		foreach($targetEntity->findAll() as $item){
+			if(!$item->$relCol){
+				// throw new exception
+			} else {
+				$options[$item->id] = $item->$relCol;
+			}
+		}
+		
+		$this->setValueOptions($options);
+	}
+	
+	public function treatValueBeforeSave()
+	{
+		$targetEntity = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager')->getRepository($this->getOption('targetEntity'));
+		return $targetEntity->find($this->getValue());
+	}
+	
+	public function getListedValue($row)
+	{
+		return $row->{$this->getName()}->{$this->getOption('relationColumn')};
 	}
 	
 	public function setServiceLocator(ServiceLocatorInterface $sl)

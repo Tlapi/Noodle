@@ -1,24 +1,44 @@
 <?php 
 namespace Modules\Forms;
 
-use Zend\Form\Element;
+//use Zend\Form\Element;
+use Zend\Form\Factory;
 
 class Form extends \Zend\Form\Factory
 {
-    protected $captcha;
+    protected $sm;
 
-    public function setCaptcha(CaptchaAdapter $captcha)
+    public function setServiceLocator($sm)
     {
-        $this->captcha = $captcha;
+        $this->sm = $sm;
     }
 
-    public function prepareElements()
+    /**
+     * Override form creation
+     */
+    public function createForm($formSpec)
     {
-        // add() can take either an Element/Fieldset instance,
-        // or a specification, from which the appropriate object
-        // will be built.
-
-        // We could also define the input filter here, or
-        // lazy-create it in the getInputFilter() method.
+    	$factory = new Factory;
+    	$form = $factory->createForm($formSpec);
+    	
+    	// Handle custom Noodle datatypes and annotations
+    	$sheets = array();
+    	foreach($form->getElements() as $element){
+    		// remove element if element is sheet
+    		if($element->getOption('sheetType')=='cyclic'){
+    			$form->remove($element->getName());
+    			$sheets[$element->getName()] = $element;
+    			continue;
+    		}
+    		
+    		// prepare element
+    		if(method_exists($element, 'prepare')){
+    			$element->setServiceLocator($this->sm);
+    			$element->prepare();
+    		}
+    	}
+    	$form->setOptions(array('sheets' => $sheets));
+    	
+		return $form;
     }
 }

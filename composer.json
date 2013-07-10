@@ -11,6 +11,8 @@
         "php": ">=5.3.3",
         "zendframework/zendframework": ">2.2.0rc1",
         "zf-commons/zfc-user": "dev-master",
-        "doctrine/doctrine-orm-module": "0.*"
+        "doctrine/doctrine-orm-module": "0.*",
+        "smottt/wideimage": "dev-master",
+        "joacub/file-bank": "dev-master"
     }
 }

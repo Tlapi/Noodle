@@ -66,6 +66,21 @@ return array(
 														'defaults' => array(
 																'action' => 'edit'
 														)
+												),
+												'may_terminate' => true,
+												'child_routes' => array(
+														'sheet' => array(
+																'type' => 'segment',
+																'options' => array(
+																		'route' => '/sheet/[:sheet_name]',
+																		'constraints' => array(
+																				'name'     => '[a-zA-Z0-9_-]+'
+																		),
+																		'defaults' => array(
+																				'action' => 'sheet'
+																		)
+																)
+														),
 												)
 										),
 								),
