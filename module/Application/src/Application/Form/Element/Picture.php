@@ -2,12 +2,12 @@
 
 namespace Application\Form\Element;
 
-use Zend\Form\Element\File;
+use Zend\Form\Element\Number;
 
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class Picture extends File implements ServiceLocatorAwareInterface
+class Picture extends Number implements ServiceLocatorAwareInterface
 {
 	
 	protected $serviceLocator;

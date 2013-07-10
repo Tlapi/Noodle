@@ -7,7 +7,11 @@ use Zend\View\Model\ViewModel;
 //use Zend\View\Model\JsonModel;
 use Doctrine\ORM\EntityManager;
 
-use Zend\Form\Annotation\AnnotationBuilder;
+//use Zend\Form\Annotation\AnnotationBuilder;
+
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
+use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+use Zend\Paginator\Paginator;
 
 class ModulesController extends AbstractActionController
 {
@@ -49,13 +53,26 @@ class ModulesController extends AbstractActionController
 		}
 
 		// Get data
-		$data = $module->findBy(array('parent_entity' => null));
+		//var_dump($module->findModuleItems());
+		
+		$adapter = new DoctrineAdapter(new ORMPaginator($module->findModuleItems()));
+		$paginator = new Paginator($adapter);
+		$paginator->setDefaultItemCountPerPage(10);
+		 
+		$page = (int)$this->params()->fromQuery('page');
+		if($page){
+			$paginator->setCurrentPageNumber($page);
+		} else {
+			$page = 1;
+		}
 
 		return new ViewModel(array(
 				'listed' => $listed,
 				'name' => $name,
-				'data' => $data,
-				'form' => $form
+				'paginator' => $paginator,
+				'form' => $form,
+				'page' => $page,
+				'flashMessages' => $this->flashMessenger()->getMessages()
 		));
 
 	}
@@ -77,7 +94,9 @@ class ModulesController extends AbstractActionController
 		$form->bind($module->find($id));
 
 		return new ViewModel(array(
-				'form' => $form
+				'form' => $form,
+				'name' => $name,
+				'id' => $id
 		));
 	}
 
@@ -106,6 +125,7 @@ class ModulesController extends AbstractActionController
 			$form->setData($this->request->getPost());
 			if ($form->isValid()) {
 
+				// move this to service
 				$entity = new $entityClassname();
 				foreach($form->getElements() as $element){
 					$name = $element->getName();
@@ -116,15 +136,18 @@ class ModulesController extends AbstractActionController
 					}
 				}
 
+				// sheet spicific parameters
 				$entity->parent_entity = 'Modules\Entity\\'.$parentEntityName;
 				$entity->parent_row_id = $id;
 
 				$this->getEntityManager()->persist($entity);
 				$this->getEntityManager()->flush();
+				
 				// redirect
-				die('redirect');
+				$this->flashMessenger()->addMessage('Entity saved!');
+				return $this->redirect()->toRoute('modules/edit/sheet', array('name' => $parentEntityName, 'id' => $id,'sheet_name' => $sheetName));
 			} else {
-				die('invalid');
+				//die('invalid');
 			}
 
 		}
@@ -135,7 +158,11 @@ class ModulesController extends AbstractActionController
 				'formParent' => $formParent,
 				'form' => $form,
 				'data' => $data,
-				'entity' => $entityClassname
+				'entity' => $entityClassname,
+				'sheetName' => $sheetName,
+				'id' => $id,
+				'parentEntityName' => $parentEntityName,
+				'flashMessages' => $this->flashMessenger()->getMessages()
 		));
 	}
 
@@ -152,29 +179,34 @@ class ModulesController extends AbstractActionController
 		// Get entity repository
 		$module = $this->getEntityManager()->getRepository('Modules\Entity\\'.$name);
 
+		// Setup entity form
 		$form = $this->getServiceLocator()->get('formMapperService')->setupEntityForm('Modules\Entity\\'.$name);
 
+		// Process form if submitted
 		if ($this->request->isPost()) {
 
 			$form->setData($this->request->getPost());
 			if ($form->isValid()) {
 
+				// move this to service
 				$entity = new $entityClassname();
 				foreach($form->getElements() as $element){
-					$name = $element->getName();
+					$elementName = $element->getName();
 					if(method_exists($element, 'treatValueBeforeSave')){
-						$entity->$name = $element->treatValueBeforeSave();
+						$entity->$elementName = $element->treatValueBeforeSave();
 					} else {
-						$entity->$name = $element->getValue();
+						$entity->$elementName = $element->getValue();
 					}
 				}
 
 				$this->getEntityManager()->persist($entity);
 				$this->getEntityManager()->flush();
+				
 				// redirect
-				die('redirect');
+				$this->flashMessenger()->addMessage('Entity saved!');
+				return $this->redirect()->toRoute('modules/show', array('name' => $name));
 			} else {
-				die('invalid');
+				//die('invalid');
 			}
 
 		}

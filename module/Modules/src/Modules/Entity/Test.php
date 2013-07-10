@@ -10,7 +10,7 @@ use Zend\Form\Annotation;
  *
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
  * @Annotation\Name("Test")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="\Modules\Repository\Base")
  * @ORM\Table(name="noodle_modules")
  * @property integer $id
  * @property string $name
@@ -73,6 +73,7 @@ class Test extends Base
 
 	/**
 	 * @Annotation\Options({"label":"My sheet", "sheetType": "cyclic", "targetEntity":"\Modules\Entity\Relation"})
+	 * @Annotation\Required(false)
 	 */
 	public $sheet;
 

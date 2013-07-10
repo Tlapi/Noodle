@@ -1,11 +1,22 @@
     <h1>Edit form</h1>
     
-    <ul>
-    	<li><a href="#">Main sheet</a></li>
-	    <?php foreach($this->formParent->getOption('sheets') as $sheet){?>
-	    	<li><a href="<?php echo $this->url('modules/edit/sheet', array('name' => 'Test', 'id' => 15, 'sheet_name' => 'sheet'))?>"><?php echo $sheet->getLabel()?></a></li>
+    <ul class="nav nav-pills">
+		<li>
+			<a href="<?php echo $this->url('modules/edit', array('name' => $this->parentEntityName, 'id' => $this->id))?>">Main sheet</a>
+		</li>
+		<?php foreach($this->formParent->getOption('sheets') as $sheet){?>
+	    	<li <?php if($this->sheetName==$sheet->getName()){?>class="active"<?php }?>><a href="<?php echo $this->url('modules/edit/sheet', array('name' => $this->parentEntityName, 'id' => $this->id, 'sheet_name' => $sheet->getName()))?>"><?php echo $sheet->getLabel()?></a></li>
 	    <?php }?>
-    </ul>
+	</ul>
+    
+    <?php if(count($this->flashMessages)) : ?>
+	<div class="alert alert-success">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<?php foreach ($this->flashMessages as $msg) : ?>
+	    	<strong>Well done!</strong> <?php echo $msg; ?><br />
+	    <?php endforeach; ?>
+	</div>
+	<?php endif; ?>
     
     <?php foreach($this->data as $item){?>
     
