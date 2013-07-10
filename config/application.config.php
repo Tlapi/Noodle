@@ -10,6 +10,7 @@ return array(
     	'DoctrineORMModule',
     	'FileBank',
     	'Application',
+    	'WebinoImageThumb'
     	//'BjyAuthorize'
     ),
 
