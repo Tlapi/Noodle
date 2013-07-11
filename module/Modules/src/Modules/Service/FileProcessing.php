@@ -6,7 +6,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 use Zend\Form\Annotation\AnnotationBuilder;
 
-class FormMapper implements ServiceLocatorAwareInterface
+class FileProcessing implements ServiceLocatorAwareInterface
 {
 
 	protected $serviceLocator;
@@ -22,42 +22,23 @@ class FormMapper implements ServiceLocatorAwareInterface
 	}
 
 	/**
-	 * Setup form for entity
+	 * Process files posted by form
 	 */
-	public function setupEntityForm($entityName) {
+	public function processFiles($request) {
 
-		$entityClassname = $entityName;
+		$post = $request->getPost();
 
-		// Get entity instance
-		$entity = new $entityClassname();
-
-		// Build basic form
-		$builder = new AnnotationBuilder();
-
-		$builder->setFormFactory($this->getServiceLocator()->get('baseForm'));
-		$form = $builder->createForm($entity);
-
-		return $form;
-
-	}
-
-	/**
-	 * Map data from form to entity
-	 * @param Zend/Form/Form $form
-	 * @param Doctrine Entity $entity
-	 */
-	public function mapFormDataToEntity($form, $entity) {
-
-		foreach($form->getElements() as $element){
-			$elementName = $element->getName();
-			if(method_exists($element, 'treatValueBeforeSave')){
-				$entity->$elementName = $element->treatValueBeforeSave();
+		$fileBank = $this->getServiceLocator()->get('FileBank');
+		foreach($request->getFiles() as $key => $file){
+			if($file['tmp_name']){
+				$fileEntity = $fileBank->save($file['tmp_name']);
+				$post->$key = $fileEntity->getId();
 			} else {
-				$entity->$elementName = $element->getValue();
+				$post->$key = null;
 			}
 		}
 
-		return $entity;
+		return $post;
 	}
 
 	/**

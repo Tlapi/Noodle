@@ -10,7 +10,7 @@ use Zend\Form\Annotation;
  *
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
  * @Annotation\Name("RelationTest")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="\Modules\Repository\Base")
  * @ORM\Table(name="noodle_relation")
  * @property integer $id
  * @property string $title

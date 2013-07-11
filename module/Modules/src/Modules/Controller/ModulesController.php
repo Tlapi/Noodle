@@ -46,19 +46,18 @@ class ModulesController extends AbstractActionController
 
 		$listed = array();
 
+		// Get listed fields
 		foreach($form->getElements() as $element){
 			if($element->getOption('listed')){
 				$listed[] = $element;
 			}
 		}
 
-		// Get data
-		//var_dump($module->findModuleItems());
-		
+		// Set pagination
 		$adapter = new DoctrineAdapter(new ORMPaginator($module->findModuleItems()));
 		$paginator = new Paginator($adapter);
 		$paginator->setDefaultItemCountPerPage(10);
-		 
+
 		$page = (int)$this->params()->fromQuery('page');
 		if($page){
 			$paginator->setCurrentPageNumber($page);
@@ -91,7 +90,35 @@ class ModulesController extends AbstractActionController
 
 		$form = $this->getServiceLocator()->get('formMapperService')->setupEntityForm('Modules\Entity\\'.$name);
 
-		$form->bind($module->find($id));
+		// Get entity
+		$entity = $module->find($id);
+
+		$form->bind($entity);
+
+		// Process post request
+		if ($this->request->isPost()) {
+
+			// process files first
+			$post = $this->getServiceLocator()->get('fileProcessingService')->processFiles($this->request);
+
+			$form->setData($post);
+			if ($form->isValid()) {
+
+				// map data to entity
+				$entity = $this->getServiceLocator()->get('formMapperService')->mapFormDataToEntity($form, $entity);
+
+				// persist entity
+				$this->getEntityManager()->persist($entity);
+				$this->getEntityManager()->flush();
+
+				// redirect
+				$this->flashMessenger()->addMessage('Changes saved!');
+				return $this->redirect()->toRoute('modules/show', array('name' => $name));
+			} else {
+				//die('invalid');
+			}
+
+		}
 
 		return new ViewModel(array(
 				'form' => $form,
@@ -122,19 +149,14 @@ class ModulesController extends AbstractActionController
 		// Process post request
 		if ($this->request->isPost()) {
 
-			$form->setData($this->request->getPost());
+			// process files first
+			$post = $this->getServiceLocator()->get('fileProcessingService')->processFiles($this->request);
+
+			$form->setData($post);
 			if ($form->isValid()) {
 
-				// move this to service
-				$entity = new $entityClassname();
-				foreach($form->getElements() as $element){
-					$name = $element->getName();
-					if(method_exists($element, 'treatValueBeforeSave')){
-						$entity->$name = $element->treatValueBeforeSave();
-					} else {
-						$entity->$name = $element->getValue();
-					}
-				}
+				// map data to entity
+				$entity = $this->getServiceLocator()->get('formMapperService')->mapFormDataToEntity($form, $entity);
 
 				// sheet spicific parameters
 				$entity->parent_entity = 'Modules\Entity\\'.$parentEntityName;
@@ -142,7 +164,7 @@ class ModulesController extends AbstractActionController
 
 				$this->getEntityManager()->persist($entity);
 				$this->getEntityManager()->flush();
-				
+
 				// redirect
 				$this->flashMessenger()->addMessage('Entity saved!');
 				return $this->redirect()->toRoute('modules/edit/sheet', array('name' => $parentEntityName, 'id' => $id,'sheet_name' => $sheetName));
@@ -182,26 +204,21 @@ class ModulesController extends AbstractActionController
 		// Setup entity form
 		$form = $this->getServiceLocator()->get('formMapperService')->setupEntityForm('Modules\Entity\\'.$name);
 
-		// Process form if submitted
 		if ($this->request->isPost()) {
 
-			$form->setData($this->request->getPost());
+			// process files first
+			$post = $this->getServiceLocator()->get('fileProcessingService')->processFiles($this->request);
+
+			$form->setData($post);
 			if ($form->isValid()) {
 
-				// move this to service
-				$entity = new $entityClassname();
-				foreach($form->getElements() as $element){
-					$elementName = $element->getName();
-					if(method_exists($element, 'treatValueBeforeSave')){
-						$entity->$elementName = $element->treatValueBeforeSave();
-					} else {
-						$entity->$elementName = $element->getValue();
-					}
-				}
+				// map data to entity
+				$entity = $this->getServiceLocator()->get('formMapperService')->mapFormDataToEntity($form, new $entityClassname());
 
+				// persist entity
 				$this->getEntityManager()->persist($entity);
 				$this->getEntityManager()->flush();
-				
+
 				// redirect
 				$this->flashMessenger()->addMessage('Entity saved!');
 				return $this->redirect()->toRoute('modules/show', array('name' => $name));

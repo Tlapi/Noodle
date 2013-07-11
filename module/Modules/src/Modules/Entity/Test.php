@@ -41,7 +41,7 @@ class Test extends Base
 	/**
 	* @ORM\Column(type="string");
 	* @Annotation\Type("Zend\Form\Element\Text")
-	* @Annotation\Options({"label":"Name:", "listed":true})
+	* @Annotation\Options({"label":"Name:", "listed":true, "placeholder":"Nice placeholder...", "blockHelp":"Nice block help text"})
 	* @Annotation\Required(true)
 	*/
 	public $name;

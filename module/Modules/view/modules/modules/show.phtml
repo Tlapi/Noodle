@@ -33,8 +33,8 @@
 					<?php if(method_exists($listed, 'getListedValue')){ echo $listed->getListedValue($row); }else{ echo $row->{$listed->getName()};}?>
 				</td>
 			<?php }?>
-			<td><a href="<?php echo $this->url('modules/edit', array('name' => $this->name, 'id' => $row->id))?>" class="btn btn-warning btn-mini"><i class="icon-pencil"></i> Edit</a></td>
-			<td><a href="#" class="btn btn-danger btn-mini"><i class="icon-remove"></i> Delete</a></td>
+			<td style="width: 52px; padding-left:25px; padding-right:25px;"><a href="<?php echo $this->url('modules/edit', array('name' => $this->name, 'id' => $row->id))?>" class="btn btn-warning btn-mini"><i class="icon-pencil"></i> Edit</a></td>
+			<td style="width: 62px; padding-left:25px; padding-right:25px;"><a href="#myModal" class="btn btn-danger btn-mini" role="button" data-toggle="modal"><i class="icon-remove"></i> Delete</a></td>
 		</tr>
 		<?php }?>
 
@@ -54,10 +54,17 @@
 
 <a href="<?php echo $this->url('modules/add', array('name' => $this->name))?>" class="btn btn-info btn-small"><i class="icon-plus"></i> Add new record</a>
 
-<script>
-
-$('a.btn-danger').click(function(){
-	return false;
-});
-
-</script>
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Do you really want to delete this item?</h3>
+  </div>
+  <div class="modal-body">
+    <p>Confirm this action (TODO)</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-danger" data-dismiss="modal">Delete this item</button>
+  </div>
+</div>

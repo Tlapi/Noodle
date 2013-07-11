@@ -9,9 +9,9 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class Picture extends Number implements ServiceLocatorAwareInterface
 {
-	
+
 	protected $serviceLocator;
-	
+
 	protected $attributes = array(
 			'type' => 'picture',
 	);
@@ -20,30 +20,25 @@ class Picture extends Number implements ServiceLocatorAwareInterface
 	{
 		// Here, we have $this->serviceLocator !!
 	}
-	
+
 	public function prepare()
 	{
-		
+
 	}
-	
-	public function treatValueBeforeSave()
-	{
-		
-	}
-	
+
 	public function getListedValue($row)
 	{
 		return $row->{$this->getName()}->{$this->getOption('relationColumn')};
 	}
-	
+
 	public function setServiceLocator(ServiceLocatorInterface $sl)
 	{
 		$this->serviceLocator = $sl;
 	}
-	
+
 	public function getServiceLocator()
 	{
 		return $this->serviceLocator;
 	}
-	
+
 }

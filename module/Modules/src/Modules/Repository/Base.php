@@ -9,12 +9,14 @@ class Base extends EntityRepository
 	function findModuleItems()
 	{
 		$qb = $this->_em->createQueryBuilder();
-		
+
 		$qb->select('u')
 		->from($this->getEntityName(), 'u');
-		
+
 		$qb->andWhere('u.parent_entity IS NULL');
-		
+
+		$qb->orderBy('u.id', 'DESC');
+
 		return $qb->getQuery();
 	}
 

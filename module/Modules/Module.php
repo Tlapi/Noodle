@@ -33,24 +33,25 @@ class Module
     					'baseForm' => function ($sm) {
     						//$service1 = $sm->get('parentPagesService');
     						//$service2 = $sm->get('categoryService');
-    						$form    = new \Modules\Forms\Form;    						
+    						$form    = new \Modules\Forms\Form;
     						$form->setServiceLocator($sm);
     						return $form;
     					},
     			),
     			'invokables' => array(
-    					'formMapperService' => '\Modules\Service\FormMapper'
+    					'formMapperService' => '\Modules\Service\FormMapper',
+    					'fileProcessingService' => '\Modules\Service\FileProcessing',
     			),
     	);
     }
-    
+
     public function getFormElementConfig()
     {
     	return array(
     			'factories' => array(
-    					
+
     			)
     	);
     }
-    
+
 }
