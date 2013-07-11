@@ -61,10 +61,10 @@
 	</thead>
 	<tbody>
 
-		<?php foreach($this->moduleList() as $module){?>
+		<?php foreach($this->repositories as $key => $repository){?>
 		<tr>
-			<td><?php echo $module->module_name?></td>
-			<td><a href="#" class="btn btn-warning btn-mini"><i class="icon-pencil"></i> Edit</a></td>
+			<td><?php echo $repository?></td>
+			<td><a href="<?php echo $this->url('modules-manager/edit-repository', array('name' => $key))?>" class="btn btn-warning btn-mini"><i class="icon-pencil"></i> Edit</a></td>
 			<td><a href="#myModal" class="btn btn-danger btn-mini" role="button" data-toggle="modal"><i class="icon-remove"></i> Delete</a></td>
 		</tr>
 		<?php }?>

@@ -53,6 +53,18 @@ return array(
 														)
 												)
 										),
+										'edit-repository' => array(
+												'type' => 'segment',
+												'options' => array(
+														'route' => '/edit-repository/:name',
+														'constraints' => array(
+																'name'     => '[a-zA-Z0-9_-]+'
+														),
+														'defaults' => array(
+																'action' => 'edit-repository'
+														)
+												)
+										),
 								)
 						),
 						'modules' => array(
