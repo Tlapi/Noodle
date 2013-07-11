@@ -40,9 +40,9 @@ class ModulesController extends AbstractActionController
 		$name = (string) $this->params()->fromRoute('name', 0);
 
 		// Get entity repository
-		$module = $this->getEntityManager()->getRepository('Modules\Entity\\'.$name);
+		$module = $this->getEntityManager()->getRepository('Modules\Entity\Tables\\'.$name);
 
-		$form = $this->getServiceLocator()->get('formMapperService')->setupEntityForm('Modules\Entity\\'.$name);
+		$form = $this->getServiceLocator()->get('formMapperService')->setupEntityForm('Modules\Entity\Tables\\'.$name);
 
 		$listed = array();
 
@@ -86,9 +86,9 @@ class ModulesController extends AbstractActionController
 		$id = (string) $this->params()->fromRoute('id', 0);
 
 		// Get entity repository
-		$module = $this->getEntityManager()->getRepository('Modules\Entity\\'.$name);
+		$module = $this->getEntityManager()->getRepository('Modules\Entity\Tables\\'.$name);
 
-		$form = $this->getServiceLocator()->get('formMapperService')->setupEntityForm('Modules\Entity\\'.$name);
+		$form = $this->getServiceLocator()->get('formMapperService')->setupEntityForm('Modules\Entity\Tables\\'.$name);
 
 		// Get entity
 		$entity = $module->find($id);
@@ -138,7 +138,7 @@ class ModulesController extends AbstractActionController
 		$id = (string) $this->params()->fromRoute('id', 0);
 
 		// Get parent form
-		$formParent = $this->getServiceLocator()->get('formMapperService')->setupEntityForm('Modules\Entity\\'.$parentEntityName);
+		$formParent = $this->getServiceLocator()->get('formMapperService')->setupEntityForm('Modules\Entity\Tables\\'.$parentEntityName);
 
 		// Get entity repository
 		$module = $this->getEntityManager()->getRepository($formParent->getOption('sheets')[$sheetName]->getOption('targetEntity'));
@@ -174,7 +174,7 @@ class ModulesController extends AbstractActionController
 
 		}
 
-		$data = $module->findBy(array('parent_entity' => 'Modules\Entity\\'.$parentEntityName, 'parent_row_id' => $id));
+		$data = $module->findBy(array('parent_entity' => 'Modules\Entity\Tables\\'.$parentEntityName, 'parent_row_id' => $id));
 
 		return new ViewModel(array(
 				'formParent' => $formParent,
@@ -196,13 +196,13 @@ class ModulesController extends AbstractActionController
 	{
 		// Get name of entity
 		$name = (string) $this->params()->fromRoute('name', 0);
-		$entityClassname = '\Modules\Entity\\'.$name;
+		$entityClassname = '\Modules\Entity\Tables\\'.$name;
 
 		// Get entity repository
-		$module = $this->getEntityManager()->getRepository('Modules\Entity\\'.$name);
+		$module = $this->getEntityManager()->getRepository('Modules\Entity\Tables\\'.$name);
 
 		// Setup entity form
-		$form = $this->getServiceLocator()->get('formMapperService')->setupEntityForm('Modules\Entity\\'.$name);
+		$form = $this->getServiceLocator()->get('formMapperService')->setupEntityForm('Modules\Entity\Tables\\'.$name);
 
 		if ($this->request->isPost()) {
 

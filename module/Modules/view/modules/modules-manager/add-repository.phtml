@@ -1,0 +1,74 @@
+<h1>Add repository</h1>
+
+<form>
+
+	<fieldset>
+		<legend>Basic repository info</legend>
+
+		<label>Repository title</label>
+		<input type="text">
+
+		<label>MySQL table name</label>
+		<input type="text">
+	</fieldset>
+
+	<fieldset>
+		<legend>Custom repository fields</legend>
+
+		<div class="well well-small muted">
+			Reserved names are: id, parent_entity, parent_row_id, timestamp
+		</div>
+
+		<div class="customfields">
+			<div class="customField">
+				<div class="form-inline">
+					<input type="text" placeholder="Field title">
+					<input type="text" placeholder="MySQL column name">
+					<select name="" id="">
+						<option value="">Select field type</option>
+						<?php foreach($this->fieldTypes as $key => $fieldType){?>
+							<option value="<?php echo $fieldType?>"><?php echo $key?></option>
+						<?php }?>
+					</select>
+				</div>
+				<div class="form-inline">
+					<label class="checkbox inline">
+					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Listed
+					</label>
+					<label class="checkbox inline">
+					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Required
+					</label>
+					<label class="checkbox inline">
+					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Table filter
+					</label>
+					<label class="checkbox inline">
+					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Unique
+					</label>
+					<label class="checkbox inline">
+					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Disabled for editing
+					</label>
+					<label class="checkbox inline">
+					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Hidden
+					</label>
+				</div>
+				<br />
+			</div>
+		</div>
+		<br />
+		<button class="btn btn-small add_another"><i class="icon-plus"></i> Add another field</button>
+		<br /><br /><br />
+	</fieldset>
+
+	<fieldset>
+		<button type="submit" class="btn btn-primary">Save & Generate table</button>
+		<!-- <button type="submit" class="btn">Just save for now</button> -->
+	</fieldset>
+</form>
+
+<script>
+$('.add_another').click(function(){
+	$('.customField').first().clone().appendTo('.customfields');
+	return false;
+});
+
+</script>

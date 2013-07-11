@@ -101,11 +101,13 @@ return array(
     						'paths' => array(
     								__DIR__ . '/../../Application/src/Application/Entity',
     								__DIR__ . '/../../Modules/src/Modules/Entity',
+    								__DIR__ . '/../../Modules/src/ModulesManager/Entity',
     						)
     				),
     				'orm_default' => array(
     						'drivers' => array(
     								'Modules\Entity' => 'noodle_driver',
+    								'ModulesManager\Entity' => 'noodle_driver',
     								'Application\Entity' => 'noodle_driver',
     						)
     				)

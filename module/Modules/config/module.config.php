@@ -7,6 +7,7 @@ return array(
 		'controllers' => array(
 				'invokables' => array(
 						'Modules\Controller\Modules' => 'Modules\Controller\ModulesController',
+						'Modules\Controller\ModulesManager' => 'Modules\Controller\ModulesManagerController',
 				),
 		),
 		'view_manager' => array(
@@ -19,6 +20,41 @@ return array(
 		),
 		'router' => array(
 				'routes' => array(
+						'modules-manager' => array(
+								'type'    => 'literal',
+								'options' => array(
+										'route'    => '/modules-manager',
+										'defaults' => array(
+												'controller' => 'Modules\Controller\ModulesManager',
+												'action'     => 'index',
+										),
+								),
+								'may_terminate' => true,
+								'child_routes' => array(
+										'add' => array(
+												'type' => 'segment',
+												'options' => array(
+														'route' => '/add',
+														'constraints' => array(
+														),
+														'defaults' => array(
+																'action' => 'add'
+														)
+												)
+										),
+										'add-repository' => array(
+												'type' => 'segment',
+												'options' => array(
+														'route' => '/add-repository',
+														'constraints' => array(
+														),
+														'defaults' => array(
+																'action' => 'add-repository'
+														)
+												)
+										),
+								)
+						),
 						'modules' => array(
 								'type'    => 'literal',
 								'options' => array(
@@ -30,7 +66,6 @@ return array(
 								),
 								'may_terminate' => true,
 								'child_routes' => array(
-										// Segment route for viewing one blog post
 										'add' => array(
 												'type' => 'segment',
 												'options' => array(
