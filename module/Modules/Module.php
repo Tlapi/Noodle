@@ -42,6 +42,7 @@ class Module
     					'formMapperService' => '\Modules\Service\FormMapper',
     					'fileProcessingService' => '\Modules\Service\FileProcessing',
     					'repositoriesService' => '\Modules\Service\Repositories',
+    					'entityGeneratorService' => '\Modules\Service\EntityGenerator',
     			),
     	);
     }

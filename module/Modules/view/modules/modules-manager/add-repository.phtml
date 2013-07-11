@@ -1,15 +1,15 @@
 <h1>Add repository</h1>
 
-<form>
+<form method="POST">
 
 	<fieldset>
 		<legend>Basic repository info</legend>
 
 		<label>Repository title</label>
-		<input type="text">
+		<input type="text" name="name">
 
 		<label>MySQL table name</label>
-		<input type="text">
+		<input type="text" name="table_name">
 	</fieldset>
 
 	<fieldset>
@@ -22,9 +22,9 @@
 		<div class="customfields">
 			<div class="customField">
 				<div class="form-inline">
-					<input type="text" placeholder="Field title">
-					<input type="text" placeholder="MySQL column name">
-					<select name="" id="">
+					<input type="text" placeholder="Field title" name="field_title[]">
+					<input type="text" placeholder="MySQL column name" name="column_name[]">
+					<select name="field_type[]" id="">
 						<option value="">Select field type</option>
 						<?php foreach($this->fieldTypes as $key => $fieldType){?>
 							<option value="<?php echo $fieldType?>"><?php echo $key?></option>
@@ -32,23 +32,28 @@
 					</select>
 				</div>
 				<div class="form-inline">
+					<input type="text" placeholder="Default value" name="default_value[]">
+					<input type="text" placeholder="Placeholder" name="placeholder[]">
+					<input type="text" placeholder="Block help" name="block_help[]">
+				</div>
+				<div class="form-inline">
 					<label class="checkbox inline">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Listed
+					  <input type="checkbox" id="inlineCheckbox1" value="true" name="listed[]"> Listed
 					</label>
 					<label class="checkbox inline">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Required
+					  <input type="checkbox" id="inlineCheckbox1" value="true" name="required[]"> Required
 					</label>
 					<label class="checkbox inline">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Table filter
+					  <input type="checkbox" id="inlineCheckbox1" value="true" name="filter[]"> Table filter
 					</label>
 					<label class="checkbox inline">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Unique
+					  <input type="checkbox" id="inlineCheckbox1" value="true" name="unique[]"> Unique
 					</label>
 					<label class="checkbox inline">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Disabled for editing
+					  <input type="checkbox" id="inlineCheckbox1" value="true" name="disabled[]"> Disabled for editing
 					</label>
 					<label class="checkbox inline">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Hidden
+					  <input type="checkbox" id="inlineCheckbox1" value="true" name="hidden[]"> Hidden
 					</label>
 				</div>
 				<br />

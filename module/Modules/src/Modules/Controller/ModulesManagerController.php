@@ -98,6 +98,18 @@ class ModulesManagerController extends AbstractActionController
 	public function addRepositoryAction()
 	{
 		$config = $this->getServiceLocator()->get('config');
+
+		if ($this->request->isPost()) {
+
+			$post = $this->request->getPost();
+
+			$this->getServiceLocator()->get('entityGeneratorService')->generateEntity($post);
+
+			// Save $generateEntity
+			exit();
+
+		}
+
 		return new ViewModel(array(
 			'fieldTypes' => $config['noodle']['field_types']
 		));
