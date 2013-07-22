@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 class Base extends EntityRepository
 {
 
-	function findModuleItems($orderElement = null, $orderDirection = null)
+	function findModuleItems($orderElement = null, $orderDirection = null, $where = null)
 	{
 		$qb = $this->_em->createQueryBuilder();
 
@@ -24,6 +24,11 @@ class Base extends EntityRepository
 			// sort by relation
 			$qb->leftJoin('u.'.$orderElement->getName(), 'r');
 			$qb->orderBy('r.'.$orderElement->getOption('relationColumn'), $orderDirection);
+		}
+
+		// where filter
+		if($where){
+			$qb->andWhere($where);
 		}
 
 		//echo $qb->getQuery()->getSQL();

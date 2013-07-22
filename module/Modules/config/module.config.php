@@ -130,6 +130,20 @@ return array(
 														),
 												)
 										),
+										'delete' => array(
+												'type' => 'segment',
+												'options' => array(
+														'route' => '/delete/:name/:id',
+														'constraints' => array(
+																'name'     => '[a-zA-Z0-9_-]+',
+																'id'     => '[0-9]+'
+														),
+														'defaults' => array(
+																'action' => 'delete'
+														)
+												),
+												'may_terminate' => true,
+										),
 								),
 						),
 				),

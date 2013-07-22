@@ -47,9 +47,14 @@ class Test extends Base
 	*/
 	public $name;
 
+	/**
+	 * @ORM\Column(type="integer");
+	 * @Annotation\Exclude()
+	 */
+	public $select_id;
 
 	/**
-	* @ORM\OneToOne(targetEntity="\Modules\Entity\Tables\Relation", fetch="EAGER")
+	* @ORM\OneToOne(targetEntity="\Modules\Entity\Tables\Relation")
 	* @Annotation\Type("Application\Form\Element\Relation")
 	* @Annotation\Required(true)
 	* @Annotation\Options({"label":"Select text:", "relationColumn":"title", "targetEntity":"\Modules\Entity\Tables\Relation", "listed":true})

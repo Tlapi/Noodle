@@ -13,6 +13,10 @@ use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Zend\Paginator\Paginator;
 
+use Doctrine\ORM\Tools\SchemaTool;
+
+use Zend\Form\Annotation\AnnotationBuilder;
+
 class ModulesController extends AbstractActionController
 {
 
@@ -104,6 +108,19 @@ class ModulesController extends AbstractActionController
 
 		$form->bind($entity);
 
+		// get inversed to rows
+		$cmf = $this->getEntityManager()->getMetadataFactory();
+		$inversedModulesData = array();
+		foreach($cmf->getMetadataFor('Modules\Entity\Tables\\'.$name)->associationMappings as $inversedModule){
+			if(isset($inversedModule['joinTable']["inverseJoinColumns"])){
+				//echo $module['targetEntity'];
+				//$inversedModulesData[]
+				$inversedModuleEntity = $this->getEntityManager()->getRepository($inversedModule['targetEntity']);
+				$inversedModuleRows = $inversedModuleEntity->findModuleItems(null, null, 'u.'.$inversedModule['joinTable']["inverseJoinColumns"][0]['referencedColumnName'].' = '.$id)->getResult();
+				$inversedModulesData[$inversedModule['targetEntity']] = $inversedModuleRows;
+			}
+		}
+
 		// Process post request
 		if ($this->request->isPost()) {
 
@@ -132,7 +149,8 @@ class ModulesController extends AbstractActionController
 		return new ViewModel(array(
 				'form' => $form,
 				'name' => $name,
-				'id' => $id
+				'id' => $id,
+				'inversedModulesData' => $inversedModulesData
 		));
 	}
 
@@ -240,6 +258,55 @@ class ModulesController extends AbstractActionController
 		return new ViewModel(array(
 				'form' => $form
 		));
+	}
+
+	/**
+	 * Delete action
+	 * @see Zend\Mvc\Controller.AbstractActionController::indexAction()
+	 */
+	public function deleteAction()
+	{
+		$name = (string) $this->params()->fromRoute('name', 0);
+		$id = (string) $this->params()->fromRoute('id', 0);
+
+		// Get entity repository
+		$module = $this->getEntityManager()->getRepository('Modules\Entity\Tables\\'.$name);
+
+		$form = $this->getServiceLocator()->get('formMapperService')->setupEntityForm('Modules\Entity\Tables\\'.$name);
+
+		// Get entity
+		$entity = $module->find($id);
+
+		// delete
+		$this->getEntityManager()->remove($entity);
+
+		// Handle related entities
+		$post = $this->request->getPost();
+		// get inversed to rows
+		$cmf = $this->getEntityManager()->getMetadataFactory();
+		$inversedModulesData = array();
+		foreach($cmf->getMetadataFor('Modules\Entity\Tables\\'.$name)->associationMappings as $inversedModule){
+			if(isset($inversedModule['joinTable']["inverseJoinColumns"])){
+				//echo $module['targetEntity'];
+				//$inversedModulesData[]
+				$inversedModuleEntity = $this->getEntityManager()->getRepository($inversedModule['targetEntity']);
+				$inversedModuleRows = $inversedModuleEntity->findModuleItems(null, null, 'u.'.$inversedModule['joinTable']["inverseJoinColumns"][0]['referencedColumnName'].' = '.$id)->getResult();
+				foreach($inversedModuleRows as $row){
+					if($post['relationHandle']=='setnull'){
+						$row->{$inversedModule['joinTable']["inverseJoinColumns"][0]['referencedColumnName']} = null;
+					}
+					if($post['relationHandle']=='delete'){
+						$this->getEntityManager()->remove($row);
+					}
+				}
+			}
+		}
+
+		$this->getEntityManager()->flush();
+
+		// redirect
+		$this->flashMessenger()->addMessage('Entity deleted!');
+		return $this->redirect()->toRoute('modules/show', array('name' => $name));
 	}
 
 	public function setEntityManager(EntityManager $em)

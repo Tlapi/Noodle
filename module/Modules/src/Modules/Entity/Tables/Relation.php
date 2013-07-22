@@ -49,12 +49,14 @@ class Relation
 	public $title;
 
 	/**
-	* @ORM\Column(type="string");
-	* @Annotation\Type("Zend\Form\Element\Text")
-	* @Annotation\Options({"label":"Description:"})
-	* @Annotation\Required(false)
-	*/
-	public $description;
+     * @ORM\ManyToMany(targetEntity="\Modules\Entity\Tables\Test")
+     * @ORM\JoinTable(name="noodle_modules",
+     *      joinColumns={@ORM\JoinColumn(name="select_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="id", referencedColumnName="select_id")}
+     *      )
+     * @Annotation\Exclude()
+     */
+    private $modules;
 
 	/**
 	* Magic getter to expose protected properties.
