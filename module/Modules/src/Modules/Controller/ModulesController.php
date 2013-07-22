@@ -52,13 +52,17 @@ class ModulesController extends AbstractActionController
 				$listed[] = $element;
 			}
 		}
-		
+
 		// Set ordering
+		$orderElement = null;
 		$orderColumn = (string)$this->params()->fromQuery('order');
 		$orderDirection = (string)$this->params()->fromQuery('dir');
-		
+		if($orderColumn){
+			$orderElement = $form->get($orderColumn);
+		}
+
 		// Set pagination
-		$adapter = new DoctrineAdapter(new ORMPaginator($module->findModuleItems($orderColumn, $orderDirection)));
+		$adapter = new DoctrineAdapter(new ORMPaginator($module->findModuleItems($orderElement, $orderDirection)));
 		$paginator = new Paginator($adapter);
 		$paginator->setDefaultItemCountPerPage(10);
 
@@ -104,9 +108,9 @@ class ModulesController extends AbstractActionController
 		if ($this->request->isPost()) {
 
 			// process files first
-			$post = $this->getServiceLocator()->get('fileProcessingService')->processFiles($this->request);
+			//$post = $this->getServiceLocator()->get('fileProcessingService')->processFiles($this->request);
 
-			$form->setData($post);
+			$form->setData($this->request->getPost());
 			if ($form->isValid()) {
 
 				// map data to entity

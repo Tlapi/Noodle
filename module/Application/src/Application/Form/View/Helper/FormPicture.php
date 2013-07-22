@@ -22,13 +22,31 @@ class FormPicture extends AbstractHelper implements ServiceLocatorAwareInterface
 
 			$thumb->save('public/_data/resized.jpg');
 			*/
-			return '<div class="form_picture">
-						<img src="'.$fileBank->getFileById($element->getValue())->getUrl().'" alt="" />
-						<a href="#" class="remove">Remove picture</a>
-						<input type="hidden" name="picture" value="'.$element->getValue().'" />
+
+			return '<div class="form_picture_container">
+						<div class="form_picture">
+							<img src="'.$fileBank->getFileById($element->getValue())->getUrl().'" alt="" />
+							#'.$element->getValue().'
+							<a href="#" class="remove">Remove picture</a>
+							<input type="hidden" name="'.$element->getName().'" value="'.$element->getValue().'" />
+						</div>
+						<input id="fileupload" type="file" name="files[]" data-url="'.$this->getServiceLocator()->get('url')->__invoke('filesystem/upload').'" multiple style="display: none">
+						<div class="progress" style="width: 300px">
+							<div class="bar bar-success" style="width: 0%;"></div>
+						</div>
 					</div>';
 		} else {
-			return '<input type="file" name="picture" />';
+			return '<div class="form_picture_container">
+						<div class="form_picture" style="display: none">
+							<img src="" alt="" />
+							<a href="#" class="remove">Remove picture</a>
+							<input type="hidden" name="'.$element->getName().'" value="" />
+						</div>
+						<input id="fileupload" type="file" name="files[]" data-url="'.$this->getServiceLocator()->get('url')->__invoke('filesystem/upload').'" multiple>
+						<div class="progress" style="width: 300px">
+							<div class="bar bar-success" style="width: 0%;"></div>
+						</div>
+					</div>';
 		}
 
 	}

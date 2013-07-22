@@ -103,10 +103,19 @@ class ModulesManagerController extends AbstractActionController
 
 			$post = $this->request->getPost();
 
-			$this->getServiceLocator()->get('entityGeneratorService')->generateEntity($post);
+			$generateEntity = $this->getServiceLocator()->get('entityGeneratorService')->generateEntity($post);
 
 			// Save $generateEntity
-			exit();
+
+			//echo $generateEntity;
+
+			// TODO change location of table entities ???
+
+			file_put_contents('module/Modules/src/Modules/Entity/Tables/'.ucfirst($post['table_name']).'.php', $generateEntity);
+
+			//$schema = new SchemaTool($this->getEntityManager());
+			//$cmf = $this->getEntityManager()->getMetadataFactory();
+			//var_dump($schema->getCreateSchemaSql(array($cmf->getMetadataFor('Modules/Entity/Tables/'.ucfirst($post['table_name'])))));
 
 		}
 

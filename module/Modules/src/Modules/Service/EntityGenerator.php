@@ -27,6 +27,8 @@ class EntityGenerator implements ServiceLocatorAwareInterface
 	public function generateEntity($post)
 	{
 
+		$fieldTypes = $this->getServiceLocator()->get('config')['noodle']['field_types'];
+
 		$generateEntity = '<?php
 namespace Modules\Entity\Tables;
 
@@ -41,7 +43,7 @@ use Modules\Entity\Base;
 * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
 * @Annotation\Name("'.$post['name'].'")
 * @ORM\Entity(repositoryClass="\Modules\Repository\Base")
-* @ORM\Table(name="'.$post['table_name'].'")';
+* @ORM\Table(name="'.strtolower($post['table_name']).'")';
 
 
 			foreach($post['column_name'] as $column){
@@ -79,12 +81,12 @@ class '.ucfirst($post['table_name']).' extends Base
 				$generateEntity .= '
 
 	/**
-	* @ORM\Column(type="string");
+	* @ORM\Column(type="'.$fieldTypes[$post['field_type'][$i]]['doctrine_type'].'");
 	* @Annotation\Type("'.$post['field_type'][$i].'")
 	* @Annotation\Options({"label":"'.$post['field_title'][$i].'", "listed":'.($post['listed'][$i]?'true':'false').','.($post['placeholder'][$i]?'"placeholder":"'.$post['placeholder'][$i].'",':'').($post['block_help'][$i]?'"blockHelp":"'.$post['block_help'][$i].'",':'').'})
 	* @Annotation\Required('.($post['required'][$i]?'true':'false').')
 	*/
-	public $name;
+	public $'.$column.';
 	';
 				$i++;
 			}

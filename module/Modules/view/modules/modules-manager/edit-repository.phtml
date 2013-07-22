@@ -15,46 +15,55 @@
 	<fieldset>
 		<legend>Current custom fields</legend>
 
+		<!--
 		<div class="well well-small muted">
 			Note: Changes are saved upon editing
 		</div>
+		-->
 
 		<div class="customfields">
+			<ol class="sortable">
 			<?php foreach($this->entity['elements'] as $element){?>
-			<div class="customField">
-				<div class="form-inline">
-					<input type="text" value="<?php echo $element['spec']['options']['label']?>">
-					<input type="text" value="<?php echo $element['spec']['name']?>" disabled>
-					<select name="" id="">
-						<option value="">Select field type</option>
-						<?php foreach($this->fieldTypes as $key => $fieldType){?>
-							<option value="<?php echo $fieldType?>" <?php if($element['spec']['type']==$fieldType){?>selected<?php }?>><?php echo $key?></option>
-						<?php }?>
-					</select>
+			<li>
+				<div class="customField well">
+
+					<div class="move-handle"><i class="icon-align-justify"></i></div>
+
+					<div class="form-inline">
+						<input type="text" value="<?php echo $element['spec']['options']['label']?>">
+						<input type="text" value="<?php echo $element['spec']['name']?>" disabled>
+						<select name="" id="">
+							<option value="">Select field type</option>
+							<?php foreach($this->fieldTypes as $key => $fieldType){?>
+								<option value="<?php echo $fieldType?>" <?php if($element['spec']['type']==$fieldType){?>selected<?php }?>><?php echo $key?></option>
+							<?php }?>
+						</select>
+					</div>
+					<div class="form-inline">
+						<label class="checkbox inline">
+						  <input type="checkbox" id="inlineCheckbox1" value="option1"> Listed
+						</label>
+						<label class="checkbox inline">
+						  <input type="checkbox" id="inlineCheckbox1" value="option1"> Required
+						</label>
+						<label class="checkbox inline">
+						  <input type="checkbox" id="inlineCheckbox1" value="option1"> Table filter
+						</label>
+						<label class="checkbox inline">
+						  <input type="checkbox" id="inlineCheckbox1" value="option1"> Unique
+						</label>
+						<label class="checkbox inline">
+						  <input type="checkbox" id="inlineCheckbox1" value="option1"> Disabled for editing
+						</label>
+						<label class="checkbox inline">
+						  <input type="checkbox" id="inlineCheckbox1" value="option1"> Hidden
+						</label>
+					</div>
 				</div>
-				<div class="form-inline">
-					<label class="checkbox inline">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Listed
-					</label>
-					<label class="checkbox inline">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Required
-					</label>
-					<label class="checkbox inline">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Table filter
-					</label>
-					<label class="checkbox inline">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Unique
-					</label>
-					<label class="checkbox inline">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Disabled for editing
-					</label>
-					<label class="checkbox inline">
-					  <input type="checkbox" id="inlineCheckbox1" value="option1"> Hidden
-					</label>
-				</div>
-				<br />
-			</div>
+			</li>
 			<?php }?>
+			</ol>
+			<a href="#" class="btn btn-primary btn-small save-order">Save order</a>
 		</div>
 		<br />
 	</fieldset>
@@ -115,4 +124,14 @@ $('.add_another').click(function(){
 	return false;
 });
 
+$("ol.sortable").sortable({
+	handle: 'i.icon-align-justify',
+	onDrop: function (item, container, _super) {
+		_super(item, container);
+    	$('.save-order').show();
+  	},
+});
+$('.save-order').click(function(){
+	$(this).hide();
+});
 </script>

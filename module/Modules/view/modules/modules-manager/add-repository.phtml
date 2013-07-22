@@ -27,7 +27,7 @@
 					<select name="field_type[]" id="">
 						<option value="">Select field type</option>
 						<?php foreach($this->fieldTypes as $key => $fieldType){?>
-							<option value="<?php echo $fieldType?>"><?php echo $key?></option>
+							<option value="<?php echo $key?>"><?php echo $fieldType['field_type_name']?></option>
 						<?php }?>
 					</select>
 				</div>

@@ -15,6 +15,10 @@
 
         <!-- Scripts -->
         <?php echo $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+                                      ->prependFile($this->basePath() . '/js/jquery-sortable-min.js')
+                                      ->prependFile($this->basePath() . '/js/jquery-file-upload/jquery.fileupload.js')
+                                      ->prependFile($this->basePath() . '/js/jquery-file-upload/jquery.iframe-transport.js')
+                                      ->prependFile($this->basePath() . '/js/jquery-file-upload/vendor/jquery.ui.widget.js')
                                       ->prependFile($this->basePath() . '/js/noodle.js')
                                       ->prependFile($this->basePath() . '/js/bootstrap.min.js')
                                       ->prependFile($this->basePath() . '/js/jquery.min.js') ?>

@@ -45,15 +45,15 @@ class Relation extends Select implements ServiceLocatorAwareInterface
 	{
 		return $row->{$this->getName()}->{$this->getOption('relationColumn')};
 	}
-	
+
 	public function getOrderTable()
 	{
 		return $this->getOption('relationColumn');
 	}
-	
+
 	public function getOrderColumn()
 	{
-		return $this->getOption('relationColumn');
+		return $this->getName();
 	}
 
 	public function setServiceLocator(ServiceLocatorInterface $sl)

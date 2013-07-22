@@ -14,7 +14,11 @@
 return array(
     'noodle' => array(
 		'field_types' => array(
-    		'Color' => 'Zend\Form\Element\Color',
+    		'Zend\Form\Element\Color' => array(
+    				'field_type_name' => 'Color',
+    				'doctrine_type' => 'string'
+    		),
+				/*
     		'Date' => 'Zend\Form\Element\Date',
     		'DateSelect' => 'Zend\Form\Element\DateTime',
     		'DateTime' => 'Zend\Form\Element\DateTime',
@@ -35,7 +39,7 @@ return array(
     		'Time' => 'Zend\Form\Element\Time',
     		'Url' => 'Zend\Form\Element\Url',
     		'Week' => 'Zend\Form\Element\Week',
-			'Zend image' => 'Zend\Form\Element\Image',
+			'Zend image' => 'Zend\Form\Element\Image',*/
     	)
 	)
 );
