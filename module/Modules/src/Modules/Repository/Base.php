@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 class Base extends EntityRepository
 {
 
-	function findModuleItems()
+	function findModuleItems($orderColumn = null, $orderDirection = null)
 	{
 		$qb = $this->_em->createQueryBuilder();
 
@@ -15,7 +15,11 @@ class Base extends EntityRepository
 
 		$qb->andWhere('u.parent_entity IS NULL');
 
-		$qb->orderBy('u.id', 'DESC');
+		if(!$orderColumn){
+			$qb->orderBy('u.id', 'DESC');
+		} else {
+			$qb->orderBy('u.'.$orderColumn, $orderDirection);
+		}
 
 		return $qb->getQuery();
 	}

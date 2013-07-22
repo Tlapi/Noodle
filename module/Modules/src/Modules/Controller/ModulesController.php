@@ -52,9 +52,13 @@ class ModulesController extends AbstractActionController
 				$listed[] = $element;
 			}
 		}
-
+		
+		// Set ordering
+		$orderColumn = (string)$this->params()->fromQuery('order');
+		$orderDirection = (string)$this->params()->fromQuery('dir');
+		
 		// Set pagination
-		$adapter = new DoctrineAdapter(new ORMPaginator($module->findModuleItems()));
+		$adapter = new DoctrineAdapter(new ORMPaginator($module->findModuleItems($orderColumn, $orderDirection)));
 		$paginator = new Paginator($adapter);
 		$paginator->setDefaultItemCountPerPage(10);
 
@@ -71,6 +75,7 @@ class ModulesController extends AbstractActionController
 				'paginator' => $paginator,
 				'form' => $form,
 				'page' => $page,
+				'dir' => $orderDirection,
 				'flashMessages' => $this->flashMessenger()->getMessages()
 		));
 

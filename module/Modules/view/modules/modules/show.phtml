@@ -18,7 +18,7 @@
 	<thead>
 		<tr>
 			<?php foreach($this->listed as $listed){?>
-				<th><?php echo $listed->getLabel()?></th>
+				<th><a href="?page=<?php echo $this->page?>&order=<?php echo (method_exists($listed, 'getOrderColumn'))?$listed->getOrderColumn():$listed->getName()?>&dir=<?php echo ($this->dir=='ASC'?'DESC':'ASC')?>"><?php echo $listed->getLabel()?></a></th>
 			<?php }?>
 			<th colspan="2"></th>
 		</tr>
